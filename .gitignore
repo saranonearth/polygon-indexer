@@ -1,0 +1,18 @@
+../.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+.env*
+.tmp/
+dist/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+data/
+.idea/
+newrelic_agent.log
+package-lock.json
+.env
