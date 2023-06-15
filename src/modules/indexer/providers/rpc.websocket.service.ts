@@ -3,6 +3,7 @@ import {InjectWebSocketProvider, OnClose, OnError, OnMessage, OnOpen, WebSocketC
 import {Logger} from 'winston';
 import {NewPendingTransaction} from '../types';
 import {UtilsService} from './utils.service';
+import {eth_subscribe_newPendingTxs} from '../constants';
 
 @Injectable()
 export class RpcWebsocketService {

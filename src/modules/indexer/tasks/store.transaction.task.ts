@@ -22,7 +22,7 @@ export class StoreTransactionTask {
             tx.emittedAt = new Date();
             tx.data = task.data;
             await this.transactionDataService.saveEvent(tx);
-            this.logger.info(`EventCreateTask - finished processing:${task.eventId}`, {task});
+            this.logger.info(`EventCreateTask - finished processing:${task.transactionHash}`);
         } catch (error) {
             this.logger.error(`Error in EventCreateTask:${task?.eventId}`, error);
         }
