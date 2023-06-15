@@ -4,6 +4,7 @@ export type EventType = {
 };
 
 export type NewPendingTransaction = Socket<NewPendingTransactionType>;
+export type MinedTransaction = Socket<MinedTransactionType>;
 
 export interface Socket<T> {
     jsonrpc: string;
@@ -54,7 +55,7 @@ export interface TransactionByHashResponse {
     type: string;
     v: string;
     value: string;
-};
+}
 
 export interface TransactionReceipt {
     transactionHash: string;
@@ -83,4 +84,14 @@ export interface Log {
     removed: boolean;
     topics: string[];
     transactionIndex: string;
+}
+
+export interface MinedTransactionType {
+    result: Result;
+    subscription: string;
+}
+
+export interface Result {
+    removed: boolean;
+    transaction: TransactionByHashResponse;
 }

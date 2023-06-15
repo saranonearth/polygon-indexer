@@ -28,7 +28,7 @@ export class ProcessTransactionTask {
                 this.utilService.getTransactionReceipt(task.transactionHash)
                 ]);
             const transaction = results[0] as RPCResponse<TransactionByHashResponse>;
-            const TxReceipt = results[1] as RPCResponse<TransactionReceipt>;
+            const txReceipt = results[1] as RPCResponse<TransactionReceipt>;
 
             // If transactions is null then the transaction is unknown (CANCELLED)
             if (!transaction) {
@@ -37,18 +37,18 @@ export class ProcessTransactionTask {
             }
             // If block number is null or receipt is null
             // then the transaction is picked up but not yet mined(PENDING)
-            if (!transaction.result.blockNumber || !TxReceipt.result) {
+            if (!transaction.result.blockNumber || !txReceipt.result) {
                 await this.utilService.storeTransaction('PENDING', task.transactionHash, task);
                 return;
             }
             // Tx is mined but the transaction failed
-            if (TxReceipt.result.blockNumber && TxReceipt.result.status === '0x0') {
-                await this.utilService.storeTransaction('FAILED', task.transactionHash, TxReceipt);
+            if (txReceipt.result.blockNumber && txReceipt.result.status === '0x0') {
+                await this.utilService.storeTransaction('FAILED', task.transactionHash, txReceipt);
                 return;
             }
             // Tx is mined but the transaction confirmed
-            if (TxReceipt.result.blockNumber && TxReceipt.result.status !== '0x0') {
-                await this.utilService.storeTransaction('CONFIRMED', task.transactionHash, TxReceipt);
+            if (txReceipt.result.blockNumber && txReceipt.result.status !== '0x0') {
+                await this.utilService.storeTransaction('CONFIRMED', task.transactionHash, txReceipt);
                 return;
             }
 

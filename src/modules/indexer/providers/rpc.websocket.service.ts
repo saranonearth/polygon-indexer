@@ -16,9 +16,11 @@ export class RpcWebsocketService {
     @OnOpen()
     public async open(): Promise<void> {
         try {
-            // listening to newPending transaction that are added to mempool
-            const resp = await this.ws.send(JSON.stringify({'jsonrpc': '2.0', 'id': 2, 'method': 'eth_subscribe', 'params': ['alchemy_pendingTransactions']}));
-            this.logger.info('Polygon(POS) websocket onOpen', {resp});
+            // listening to newPending transactions that are added to mempool
+            await this.ws.send(JSON.stringify({'jsonrpc': '2.0', 'id': 2, 'method': 'eth_subscribe', 'params': ['alchemy_pendingTransactions']}));
+            // listening to mined transactions
+            await this.ws.send(JSON.stringify({'jsonrpc': '2.0', 'id': 2, 'method': 'eth_subscribe', 'params': ['alchemy_minedTransactions']}));
+            this.logger.info('Polygon(POS) websocket onOpen');
         } catch (e) {
             this.logger.error('ws open', e);
         }
@@ -29,7 +31,13 @@ export class RpcWebsocketService {
         try {
             if (!message) { return; }
             const data = JSON.parse(message);
-            await this.utilsService.handleQueuedTransaction(data);
+            // If the message is from listening to newPendingTransaction event (mempool)
+            if (data?.params?.result?.blockHash === null) {
+                await this.utilsService.handleQueuedTransaction(data);
+                return;
+            }
+            // Else then the message is from minedTransaction event
+            await this.utilsService.processMinedTransaction(data);
         } catch (e) {
             this.logger.error('onMessage', e, {data: JSON.parse(message)});
         }
