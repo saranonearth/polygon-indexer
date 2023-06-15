@@ -8,12 +8,10 @@ export class Transaction {
 
     public _id: string;
 
-    @Index()
-    @Prop({required: true})
+    @Prop({required: true, index: true})
     public status: TxStatus;
 
-    @Index()
-    @Prop({required: true})
+    @Prop({required: true, index: true})
     public transactionHash: string;
 
     @Prop({default: () => new Date()})
@@ -25,3 +23,4 @@ export class Transaction {
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+TransactionSchema.index({status: 1, transactionHash: 1}, {unique: true});
