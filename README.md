@@ -14,14 +14,16 @@ docker build -t polygon-indexer:latest .
 docker run -p 9000:9000 polygon-indexer:latest
 ```
 
+> Note: Run docker-compose up --build to setup kafka
+
 ## Env
 Following variables need to be added to the .env file
 ```
 APP_ENV="development"
-KAFKA_BROKERS
-MONGO_URL
-POLYGON_RPC_WSS
-POLYGON_RPC
+KAFKA_BROKERS=localhost:29092
+MONGO_URL=
+POLYGON_RPC_WSS=
+POLYGON_RPC=
 PORT=9000
 ```
 
