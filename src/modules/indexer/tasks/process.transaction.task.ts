@@ -23,6 +23,15 @@ export class ProcessTransactionTask {
             if (!task) {
                 throw new Error('event.process.transaction - Event task data not found');
             }
+            const queuedTx = await this.transactionDataService.getTransactionByHash(task.transactionHash);
+            /**
+             * Making processTransactionInMempool idempotent by making sure we only process txs
+             * that are in QUEUED state
+             */
+            if (queuedTx && queuedTx.status !== 'QUEUED') {
+                this.logger.info('Transaction already in end state', {hash: task.transactionHash});
+                return;
+            }
             const results = await Promise.all([
                 this.utilService.getTransactionByHash(task.transactionHash),
                 this.utilService.getTransactionReceipt(task.transactionHash)

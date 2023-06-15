@@ -18,4 +18,8 @@ export class TransactionDataService {
         return this.transactionModel.find({status}).skip(skip).limit(limit);
     }
 
+    public async getTransactionByHash(hash: string): Promise<Transaction | null> {
+        return this.transactionModel.findOne({transactionHash: hash});
+    }
+
 }
