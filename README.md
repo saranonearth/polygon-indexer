@@ -1,5 +1,7 @@
 
 ### Polygon(POS) Indexer
+A transaction indexer for Polygon(POS)💜
+
 <img width="889" alt="Screenshot 2023-06-16 at 3 47 38 AM" src="https://github.com/saranonearth/polygon-indexer/assets/44068102/76f9fd56-dce7-4672-9a43-8cbb8d2360c5">
 
 ## Local Setup 
