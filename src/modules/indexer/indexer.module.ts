@@ -6,6 +6,7 @@ import {ProducerModule} from '../producer/producer.module';
 import {MongooseModule} from '@nestjs/mongoose';
 import {Transaction, TransactionSchema} from './models/Transaction';
 import {StoreTransactionTask} from './tasks/store.transaction.task';
+import {ProcessTransactionTask} from './tasks/process.transaction.task';
 
 @Module({
     imports: [ProducerModule, MongooseModule.forFeature([
@@ -18,7 +19,7 @@ import {StoreTransactionTask} from './tasks/store.transaction.task';
             } as WebSocketModuleOptions;
         }
     })],
-    providers: [...Object.values(providers), StoreTransactionTask],
+    providers: [...Object.values(providers), StoreTransactionTask, ProcessTransactionTask],
     exports: []
 })
 export class IndexerModule {

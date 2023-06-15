@@ -21,7 +21,9 @@ export class ConsumerService {
     public async process(data: any, key: any, offset: number, timestamp: number, partition: number, headers: IHeaders): Promise<void> {
         try {
             const parsedData: EventType = JSON.parse(data);
-            await this.eventEmitter.emitAsync(parsedData.event, parsedData.data);
+            for (const event of parsedData.event) {
+                await this.eventEmitter.emitAsync(event, parsedData.data);
+            }
         } catch (error) {
             this.logger.error('Consumer Error', error, {data});
         }

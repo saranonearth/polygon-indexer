@@ -1,9 +1,7 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {InjectWebSocketProvider, OnClose, OnError, OnMessage, OnOpen, WebSocketClient} from 'nestjs-websocket';
 import {Logger} from 'winston';
-import {NewPendingTransaction} from '../types';
 import {UtilsService} from './utils.service';
-import {eth_subscribe_newPendingTxs} from '../constants';
 
 @Injectable()
 export class RpcWebsocketService {
@@ -31,7 +29,7 @@ export class RpcWebsocketService {
         try {
             if (!message) { return; }
             const data = JSON.parse(message);
-            await this.utilsService.produceQueuedTransaction(data);
+            await this.utilsService.handleQueuedTransaction(data);
         } catch (e) {
             this.logger.error('onMessage', e, {data: JSON.parse(message)});
         }

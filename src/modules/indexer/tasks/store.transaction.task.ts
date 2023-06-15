@@ -14,7 +14,7 @@ export class StoreTransactionTask {
     public async process(task: any): Promise<void> {
         try {
             if (!task) {
-                throw new Error('Event task data not found');
+                throw new Error('event.store.transaction - Event task data not found');
             }
             const tx = new Transaction();
             tx.transactionHash = task.transactionHash;
@@ -22,9 +22,9 @@ export class StoreTransactionTask {
             tx.emittedAt = new Date();
             tx.data = task.data;
             await this.transactionDataService.saveEvent(tx);
-            this.logger.info(`EventCreateTask - finished processing:${task.transactionHash}`);
+            this.logger.info(`Store Transaction - finished processing:${task.transactionHash}`);
         } catch (error) {
-            this.logger.error(`Error in EventCreateTask:${task?.eventId}`, error);
+            this.logger.error(`Error in transaction storing:${task?.transactionHash}`, error);
         }
     }
 }
